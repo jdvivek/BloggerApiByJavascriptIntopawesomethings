@@ -1,0 +1,76 @@
+<!--Clear Page Start-->
+
+<style>
+div
+.sidebar-container, .featured-post, .post-title-container, .blogger, .comments, .centered-top-container, svg{
+
+display:none;
+   visibility: hidden; 
+}
+
+</style>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+<script>
+$(document).ready(function(){
+  document.getElementsByTagName('body')[0].innerHTML=document.getElementsByClassName("post-body")[0].innerHTML
+});
+</script>
+
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet"></link>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+<!--Clear Page End--->
+<!------------------------------------------------------------------Start From Here---------------------------------------------------------------
+-->
+
+<script src="https://apis.google.com/js/api.js"></script>
+<script>
+  /**
+   * Sample JavaScript code for blogger.posts.insert
+   * See instructions for running APIs Explorer code samples locally:
+   * https://developers.google.com/explorer-help/guides/code_samples#javascript
+   */
+
+  function authenticate() {
+    return gapi.auth2.getAuthInstance()
+        .signIn({scope: "https://www.googleapis.com/auth/blogger"})
+        .then(function() { console.log("Sign-in successful"); },
+              function(err) { console.error("Error signing in", err); });
+  }
+  function loadClient() {
+    gapi.client.setApiKey("AIzaSyDds7SKKcvMv6aJ5ZucDFLa8DOmtFZLpIo");
+    return gapi.client.load("https://content.googleapis.com/discovery/v1/apis/blogger/v3/rest")
+        .then(function() { console.log("GAPI client loaded for API"); },
+              function(err) { console.error("Error loading GAPI client for API", err); });
+  }
+  // Make sure the client is loaded and sign-in is complete before calling this method.
+  function execute() {
+    return gapi.client.blogger.posts.insert({
+      "blogId": "4001166705570736505",
+      "fetchBody": true,
+      "fetchImages": true,
+      "isDraft": true,
+      "resource": {
+        "kind": "blogger#post",
+        "blog": {
+          "id": "8070105920543249955"
+        },
+        "title": "A new post",
+        "content": "With &lt;b&gt;exciting&lt;/b&gt; content..."
+      }
+    })
+        .then(function(response) {
+                // Handle the results here (response.result has the parsed body).
+                console.log("Response", response);
+              },
+              function(err) { console.error("Execute error", err); });
+  }
+  gapi.load("client:auth2", function() {
+    gapi.auth2.init({client_id: "5695355571-m7rar0g0stppvkhn1u16o9bkjkh1i1ui.apps.googleusercontent.com"});
+  });
+</script>
+<button onclick="authenticate().then(loadClient)">authorize and load</button>
+<button onclick="execute()">execute</button>
+
